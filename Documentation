@@ -1,0 +1,334 @@
+
+composer require livewire/livewire
+
+
+php artisan livewire:publish --config
+
+///.web///
+
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/custom/livewire/update', $handle);
+});
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+
+composer require filament/upgrade:"^3.0-stable" -W --dev
+
+vendor/bin/filament-v3
+
+install this pacages manualy
+
+
+
+  "require-dev": {
+        "fakerphp/faker": "^1.9.1",
+        "filament/upgrade": "^3.0-stable",
+        "filament/filament":"^3.x-dev",
+        "laravel/pint": "^1.0",
+        "laravel/sail": "^1.18",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^7.0",
+        "phpunit/phpunit": "^10.1",
+        "spatie/laravel-ignition": "^2.0",
+        "filament/widgets": "3.x-dev",
+        "filament/support": "3.x-dev",
+        "danharrin/livewire-rate-limiting": "^0.3|^1.0",
+        "filament/actions": "3.x-dev",
+        "filament/forms": "3.x-dev",
+        "filament/infolists": "3.x-dev",
+        "filament/notifications": "3.x-dev",
+        "filament/tables": "3.x-dev",
+        "illuminate/auth": "^10.0",
+        "illuminate/console": "^10.0",
+        "illuminate/contracts": "^10.0",
+        "illuminate/cookie": "^10.0",
+        "illuminate/database": "^10.0",
+        "illuminate/http": "^10.0",
+        "illuminate/routing": "^10.0",
+        "illuminate/session": "^10.0",
+        "illuminate/support": "^10.0",
+        "illuminate/view": "^10.0",
+        "spatie/laravel-package-tools":"^1.9"
+    },
+
+
+
+sudo apt install php8.3-intl
+
+
+composer upgrade
+
+php artisan make:filament-user
+
+
+php artisan vendor:publish --tag=filament-config
+
+php artisan vendor:publish --tag=filament-panels-translations
+
+php artisan vendor:publish --tag=filament-actions-translations
+
+php artisan vendor:publish --tag=filament-forms-translations
+
+php artisan vendor:publish --tag=filament-notifications-translations
+
+php artisan vendor:publish --tag=filament-tables-translations
+
+php artisan vendor:publish --tag=filament-translations
+
+
+
+
+//////////use this in user model when in production
+
+
+
+
+<?php
+
+namespace App\Models;
+
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable implements FilamentUser
+{
+    // ...
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
+    }
+}
+
+
+
+////////////////////////////////categories+users////////////////////////////////
+
+
+
+php artisan make:migration create_categories_table --create=categories
+
+
+
+php artisan make:migration create_educationalstages_table --create=educationalstages
+
+
+php artisan make:migration create_classrooms_table --create=classrooms
+
+
+
+
+
+php artisan make:migration create_classnumbers_table --create=classnumbers
+
+
+php artisan make:migration create_freelearners_table --create=freelearners
+
+
+
+
+php artisan make:filament-resource Category  &&  php artisan make:model Category
+
+
+php artisan make:filament-resource Educationalstage  &&  php artisan make:model Educationalstage
+
+php artisan make:filament-resource Classterm  &&  php artisan make:model Classterm
+
+php artisan make:filament-resource Classnumber  &&  php artisan make:model Classnumber
+
+php artisan make:filament-resource Freelearner &&  php artisan make:model Freelearner
+
+
+php artisan make:filament-resource User
+
+//////////////////////////////content//////////////////////////////////////
+
+
+
+php artisan make:migration create_courses_table --create=courses
+
+
+php artisan make:migration create_books_table --create=books
+
+
+php artisan make:migration create_lessons_table --create=lessons
+
+
+
+php artisan make:filament-resource Course &&  php artisan make:model Course
+
+
+
+php artisan make:filament-resource Book &&  php artisan make:model Book
+
+
+
+php artisan make:filament-resource Lesson &&  php artisan make:model Lesson
+
+
+
+
+
+////////////////////Quizes//////////////////////////////
+
+
+php artisan make:migration create_quizzes_table --create=quizzes
+
+
+php artisan make:migration create_quizforms_table --create=quizforms
+
+
+
+php artisan make:migration create_studentquizforms_table --create=studentquizforms
+
+
+php artisan make:migration create_questions_table --create=questions
+
+
+php artisan make:filament-resource Quiz &&  php artisan make:model Quiz
+
+
+php artisan make:filament-resource Quizform &&  php artisan make:model Quizform
+
+
+php artisan make:filament-resource Studentquizform &&  php artisan make:model Studentquizform
+
+
+php artisan make:filament-resource Question &&  php artisan make:model Question
+
+
+
+
+////////////////////////////////////images and files
+
+php artisan storage:link    //important to select 127.0.0.1:8000 for image storage
+
+                           // i installed media spatie-laravel-media-library-plugin  to make the default package  work
+
+
+composer require filament/spatie-laravel-media-library-plugin:"^3.0-stable" -W
+
+
+
+
+php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"
+
+
+php artisan migrate:fresh
+
+
+///////////if isue  in storing files media
+
+composer update
+
+php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"
+
+php artisan storage:link
+
+
+
+
+
+
+///////////////////////////////////////////////
+
+
+////////////////////////////////Roles and permissions  /////////////////
+
+
+composer require althinect/filament-spatie-roles-permissions
+
+
+
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+
+
+
+php artisan vendor:publish --tag="filament-spatie-roles-permissions-config" --force
+
+
+
+
+php artisan permissions:sync
+
+
+
+
+php artisan make:policy BookPolicy &&
+php artisan make:policy CategoryPolicy &&
+php artisan make:policy ClassnumberPolicy  &&
+php artisan make:policy ClasstermPolicy &&
+php artisan make:policy CoursePolicy &&
+php artisan make:policy EducationalstagePolicy &&
+php artisan make:policy FreelearnerPolicy &&
+php artisan make:policy LessonPolicy  &&
+php artisan make:policy QuizPolicy  &&
+php artisan make:policy QuizformPolicy  &&
+php artisan make:policy UserPolicy
+
+php artisan make:policy RolePolicy &&  php artisan make:model  Role
+
+php artisan make:policy PermissionPolicy &&  php artisan make:model Permission
+
+
+////////////////////////////////////////////////////////////////////////////////
+show and hide roles and Permission panel from admin panel
+
+GoTo:
+
+/home/i/Documents/1-main/elearning(vue)/vendor/althinect/filament-spatie-roles-permissions/config/filament-spatie-roles-permissions.php
+
+'should_register_on_navigation' => [
+    'permissions' => false,
+    'roles' => false,
+///////////////////////////////////////multible panels //////////////////////////////////////////
+
+
+php artisan make:filament-panel teacher
+
+
+php artisan make:filament-resource Quizform --view
+php artisan make:filament-resource Lesson  --view
+php artisan make:filament-resource Freelearner  --view
+php artisan make:filament-resource Book --view
+
+
+php artisan make:filament-panel student
+
+
+php artisan make:filament-resource Quizform --view
+php artisan make:filament-resource Lesson  --view
+php artisan make:filament-resource Freelearner  --view
+php artisan make:filament-resource Book --view
+
+
+
+php artisan make:filament-panel parent
+
+
+php artisan make:filament-resource Quizform --view
+php artisan make:filament-resource Lesson  --view
+php artisan make:filament-resource Freelearner  --view
+php artisan make:filament-resource Book --view
+
+
+
+
+
+////////////////////////////installing vuejs ////////////////////////////
+
+composer require inertiajs/inertia-laravel
+
+npm install laravel-precognition-vue-inertia
+
+npm run dev
+
+npm install @vitejs/plugin-vue
+
+npm install vue@next
+php artisan inertia:middleware
